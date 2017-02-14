@@ -1,0 +1,22 @@
+{
+  "name": "部门",
+  "version": "1.0.0",
+  "description": "erp base dic",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "erp",
+    "base",
+    "dic"
+  ],
+  "author": "saas-plat.com",
+  "license": "ISC",
+
+  "spconfig": {
+    "installDependencies": {
+      "app/appfx": "^1.0.0"
+    }
+  }
+}
