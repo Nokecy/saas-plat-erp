@@ -1,7 +1,7 @@
 {
-  "name": "部门",
+  "name": "saas-plat-erp-base-department",
   "version": "1.0.0",
-  "description": "erp base dic",
+  "description": "部门管理",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -15,6 +15,17 @@
   "license": "ISC",
 
   "spconfig": {
+    "module": {
+      "name": "erp/base/department",
+      "text": "进销存/基本信息/部门",
+      "description": "维护部门列表和编辑部门信息等功能",
+      "adapter": [{
+        "description": "支持iphone和android手机应用",
+        "platform": ["ios", "android"],
+        "screen": ["xs", "sm"],
+        "views": ["List", "Edit"]
+      }]
+    },
     "installDependencies": {
       "app/appfx": "^1.0.0"
     }
