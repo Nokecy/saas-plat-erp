@@ -1,7 +1,7 @@
 {
   "text": "部门信息",
   "name": "edit",
-  "url": "appfx/card",
+  "url": "saas-plat-appfx/card",
   "config": {
     "detail": [{
       "field": "name",

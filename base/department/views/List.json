@@ -1,7 +1,7 @@
 {
   "name": "list",
   "text": "部门列表",
-  "url": "appfx/list",
+  "url": "saas-plat-appfx/list",
   "config": {
     "data": {
       "model": "DepartmentList",
