@@ -49,23 +49,22 @@
         "showCount": 2,
         "items": [{
           "name": "search",
-          "icon": "fa-search",
+          "icon": "magnifier",
           "text": "查找",
           "action": "search"
         }, {
           "name": "addDepartment",
           "text": "添加部门",
           "action": "add",
-          "icon": "fa-plus"
+          "icon": "plus"
         }, {
           "name": "addEmployee",
           "text": "添加员工",
           "action": "openEmployee",
-          "icon": "fa-user-plus"
+          "icon": "user-follow"
         }, {
           "name": "edit",
           "text": "删除",
-          "icon": "fa-bullseye",
           "action": "edit"
         }]
       },
