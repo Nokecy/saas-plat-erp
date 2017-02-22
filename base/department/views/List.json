@@ -34,6 +34,12 @@
           }]
         }
       },
+      "openDepartmentList": {
+        "command": "goto",
+        "args": {
+          "pid": "$tree.selected.id"
+        }
+      },
       "filterEnable": {
         "command": "filter",
         "args": {
@@ -81,19 +87,19 @@
         }]
       },
       "list": {
-        "columns": [{
+        "header":{
+          "textKey": "text",
+          "IdKey": "id",
+          "separator": "/",
+          "action": "openSelectedList"
+        },
+        "row": [{
           "name": "text",
-          "value": "$item.name",
-          "text": "编码"
-        }, {
-          "name": "text",
-          "value": "$item.text",
-          "text": "名称",
+          "text": "$item.text", 
           "flex": 1
         }, {
           "name": "enabled",
-          "value": "$item.enabled?'启用':'停用'",
-          "text": "状态"
+          "value": "!$item.enabled && '停用'" 
         }],
         "actions": [{
           "filter": "$ctx.mode!='edit'",
