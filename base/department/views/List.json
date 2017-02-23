@@ -37,7 +37,7 @@
       "openDepartmentList": {
         "command": "goto",
         "args": {
-          "pid": "$tree.selected.id"
+          "pid": "$tree.selected.hid"
         }
       },
       "filterEnable": {
@@ -75,6 +75,7 @@
         }]
       },
       "filter": {
+        "selectedIndex": 0,
         "buttons": [{
           "name": "enabled",
           "text": "启用",
@@ -86,31 +87,31 @@
         }]
       },
       "list": {
-        "header":{
+        "sectionHeader":{
           "textKey": "text",
           "IdKey": "id",
           "separator": "/",
           "action": "openSelectedList"
         },
-        "row": [{
-          "name": "text",
-          "text": "$item.text", 
-          "flex": 1
-        }, {
-          "name": "enabled",
-          "value": "!$item.enabled && '停用'" 
-        }],
-        "actions": [{
-          "filter": "$ctx.mode!='edit'",
-          "name": "changeStatus",
-          "text": "$item.enabled?'启用':'停用'",
-          "action": "toggleEnable"
-        }, {
-          "filter": "$ctx.mode==edit",
-          "name": "delete",
-          "text": "删除",
-          "action": "deleteDepartment"
-        }]
+        "row": {"columns":[{
+                  "name": "text",
+                  "text": "$item.text", 
+                  "flex": 1
+                }, {
+                  "name": "enabled",
+                  "value": "!$item.enabled && '停用'" 
+                }],
+                "actions": [{
+                  "filter": "$ctx.mode!='edit'",
+                  "name": "changeStatus",
+                  "text": "$item.enabled?'启用':'停用'",
+                  "action": "toggleEnable"
+                }, {
+                  "filter": "$ctx.mode==edit",
+                  "name": "delete",
+                  "text": "删除",
+                  "action": "deleteDepartment"
+                }]}
       },
       "editMode": {
 
