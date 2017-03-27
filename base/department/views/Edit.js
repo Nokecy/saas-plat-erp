@@ -1,4 +1,4 @@
-{
+export default {
   "text": "部门信息",
   "name": "edit",
   "url": "saas-plat-appfx/card",

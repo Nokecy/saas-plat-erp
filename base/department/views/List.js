@@ -1,4 +1,4 @@
-{
+export default {
   "name": "list",
   "text": "部门列表",
   "url": "saas-plat-appfx/list",
