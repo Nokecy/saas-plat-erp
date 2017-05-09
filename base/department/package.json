@@ -2,32 +2,23 @@
   "name": "saas-plat-erp-base-department",
   "version": "1.0.0",
   "description": "部门管理",
-  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "compile": "babel --presets es2015,stage-1 --plugins transform-runtime src --out-dir app --source-maps",
+    "watch": "babel --watch --presets es2015,stage-1 --plugins transform-runtime src --out-dir app --source-maps",
+    "pub": "npm publish --registry https://registry.npmjs.org/",
+    "prepublish": "npm run compile"
   },
   "keywords": [
     "erp",
     "base",
-    "dic"
+    "department"
   ],
   "author": "saas-plat.com",
   "license": "ISC",
-
-  "spconfig": {
-    "module": {
-      "name": "erp/base/department",
-      "text": "进销存/基本信息/部门",
-      "description": "维护部门列表和编辑部门信息等功能",
-      "adapter": [{
-        "description": "支持iphone和android手机应用",
-        "platform": ["ios", "android"],
-        "screen": ["xs", "sm"],
-        "views": ["List", "Edit"]
-      }]
-    },
-    "installDependencies": {
-      "app/appfx": "^1.0.0"
-    }
+  "devDependencies": {
+    "babel-cli": "^6.24.1",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-stage-1": "^6.24.1"
   }
 }
