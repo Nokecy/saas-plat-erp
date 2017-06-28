@@ -1,0 +1,21 @@
+{
+  "name": "saas-plat-erp-purchase-order",
+  "version": "1.0.0",
+  "description": "erp purchase order service",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/saas-plat/saas-plat-erp/tree/master/purchase/order"
+  },
+  "keywords": [
+    "saas-plat",
+    "erp",
+    "purchase",
+    "order"
+  ],
+  "author": "saas-plat.com",
+  "license": "GPL-3.0"
+}

@@ -1,0 +1,20 @@
+{
+  "presets": ["es2015", "stage-0", "react"],
+  "plugins": [
+    "transform-decorators-legacy", ["transform-runtime", {
+      "helpers": false,
+      "polyfill": false,
+      "regenerator": true
+    }],
+    ["import", [{
+      "libraryName": "antd-mobile",
+      "style": true
+    }, {
+      "libraryName": "antd",
+      "style": true
+    }, {
+      "libraryName": "saas-plat-native-core"
+    }]],
+    "transform-package"
+  ]
+}
