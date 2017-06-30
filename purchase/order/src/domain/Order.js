@@ -1,5 +1,4 @@
-
-export default class   extends saasplat.aggregate {
+export default class extends saasplat.aggregate {
   // 单据编号
   code;
   // 单据日期
@@ -88,7 +87,7 @@ export default class   extends saasplat.aggregate {
           partner_code: partner.code,
           department_code: department.code,
           employee_code: employee.code,
-          project_code: project.code,
+          project_code: project.code
         });
       }
     }
@@ -176,26 +175,28 @@ export default class   extends saasplat.aggregate {
 
   // 取消提交
   cancel() {
-    this.raiseEvent('submited', {
-      code: this.code
-    });
+    this.raiseEvent('submited', {code: this.code});
   }
 
   // 变更
-  change() {
-
-  }
+  change() {}
 
   // ************* events *************
 
-  created({ state, ...other }) {
+  created({
+    state,
+    ...other
+  }) {
     for (cont key in other) {
       this[key] = other[key];
     }
     this.state = 0;
   }
 
-  saved({ state, ...other }) {
+  saved({
+    state,
+    ...other
+  }) {
     for (cont key in other) {
       this[key] = other[key];
     }

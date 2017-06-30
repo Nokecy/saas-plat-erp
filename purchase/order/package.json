@@ -18,9 +18,7 @@
   ],
   "author": "saas-plat.com",
   "license": "GPL-3.0",
-  "dependencies": {
-
-  },
+  "dependencies": {},
   "devDependencies": {
     "babel-core": "^6.25.0",
     "babel-eslint": "^7.2.3",
