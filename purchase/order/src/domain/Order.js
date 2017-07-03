@@ -1,22 +1,24 @@
 export default class extends saasplat.aggregate {
-  // 单据编号
+
+  // 订单编号
   code;
+
   // 单据日期
   datetime;
 
   // 供应商
-  partner_code;
+  partner_id;
   // 部门
-  department_code;
+  department_id;
   // 业务员
-  employee_code;
+  employee_id;
   // 项目
-  project_code;
+  project_id;
   // 预计到货日期
   arrival_datetime;
 
   // 币种
-  currency_code;
+  currency_id;
   // 汇率
   exchange_rate;
 
@@ -33,16 +35,16 @@ export default class extends saasplat.aggregate {
   contract_no;
 
   // 结算方式
-  settlement_code;
+  settlement_id;
   // 订金金额 付款单号
-  payment_code;
+  payment_id;
 
   // 销售订单号
-  sales_order_code;
+  sales_order_id;
   // 来源单据
   source_type;
   // 来源单号
-  source_code;
+  source_id;
 
   // 明细
   details = [];
@@ -68,43 +70,20 @@ export default class extends saasplat.aggregate {
   }) {
     const order = new Order(id);
 
-    // 默认业务日期
-    if (!datetime || saasplat.moment(datetime).invalid()) {
-      const usersess = saasplat.service('usersession');
-      if (usersess) {
-        datetime = saasplat.moment(usersess.login_date).toDate();
-      }
-    }
-    datetime = saasplat.moment(datetime).fromat('YYYY-MM-DD');
-
-    // 自动编号
-    if (!code) {
-      const coder = saasplat.service('coder');
-      if (coder && coder.canCode(this.__module)) {
-        code = coder.create(tihs.__module, {
-          type_code: 'PO',
-          datetime,
-          partner_code: partner.code,
-          department_code: department.code,
-          employee_code: employee.code,
-          project_code: project.code
-        });
-      }
-    }
-
     order.raiseEvent('created', {
+      id,
       code,
       datetime,
       ...other,
-      partner_code: partner.code,
-      department_code: department.code,
-      employee_code: employee.code,
-      project_code: project.code,
-      currency_code: currency.code,
-      settlement_code: settlement.code,
-      payment_code: payment.code,
-      sales_order_code: sales_order.code,
-      source_code: source.code,
+      partner_id: partner.id,
+      department_id: department.id,
+      employee_id: employee.id,
+      project_id: project.id,
+      currency_id: currency.id,
+      settlement_id: settlement.id,
+      payment_id: payment.id,
+      sales_order_id: sales_order.id,
+      source_id: source.id,
       details
     });
     return order;
@@ -128,10 +107,7 @@ export default class extends saasplat.aggregate {
     if (this.state !== 0 && this.state !== 1) {
       throw Error(this.t('订单已审核无法修改'));
     }
-    if (this.code && code) {
-      throw Error(this.t('订单编号不允许修改'));
-    }
-    if (!this.code && !code) {
+    if (!code) {
       throw Error(this.t('订单编号不能为空'));
     }
     if (!datetime) {
@@ -141,7 +117,7 @@ export default class extends saasplat.aggregate {
     if (mdate.invalid()) {
       throw Error(this.t('订单日期无效'));
     }
-    if (!partner && !this.partner_code) {
+    if (!partner && !this.partner_id) {
       throw Error(this.t('供应商不能为空'));
     }
     if ((!details || !details.length) && (!this.details || !this.details.length)) {
@@ -150,18 +126,19 @@ export default class extends saasplat.aggregate {
     // todo 当采购订单日期小于启用日期或是已期末处理的会计期间日期时，不允许在采购订单上录入、修改订金。
 
     this.raiseEvent('saved', {
+      id: this.id,
       code,
       datetime: mdate.format('YYYY-MM-DD'),
       ...other,
-      partner_code: partner.code || this.partner_code,
-      department_code: department.code || this.department_code,
-      employee_code: employee.code || this.employee_code,
-      project_code: project.code || this.project_code,
-      currency_code: currency.code || this.currency_code,
-      settlement_code: settlement.code || this.settlement_code,
-      payment_code: payment.code || this.payment_code,
-      sales_order_code: sales_order.code || this.sales_order_code,
-      source_code: source.code || this.source_code,
+      partner_id: partner.id || this.partner_id,
+      department_id: department.id || this.department_id,
+      employee_id: employee.id || this.employee_id,
+      project_id: project.id || this.project_id,
+      currency_id: currency.id || this.currency_id,
+      settlement_id: settlement.id || this.settlement_id,
+      payment_id: payment.id || this.payment_id,
+      sales_order_id: sales_order.id || this.sales_order_id,
+      source_id: source.id || this.source_id,
       details: details || this.details
     });
   }
@@ -175,7 +152,7 @@ export default class extends saasplat.aggregate {
 
   // 取消提交
   cancel() {
-    this.raiseEvent('submited', {code: this.code});
+    this.raiseEvent('submited', { id: this.id });
   }
 
   // 变更
