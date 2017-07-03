@@ -49,6 +49,9 @@ export default class extends saasplat.aggregate {
   // 明细
   details = [];
 
+  // 备注
+  note;
+
   // 状态
   state;
 
@@ -69,21 +72,20 @@ export default class extends saasplat.aggregate {
     ...other
   }) {
     const order = new Order(id);
-
     order.raiseEvent('created', {
       id,
       code,
       datetime,
       ...other,
-      partner_id: partner.id,
-      department_id: department.id,
-      employee_id: employee.id,
-      project_id: project.id,
-      currency_id: currency.id,
-      settlement_id: settlement.id,
-      payment_id: payment.id,
-      sales_order_id: sales_order.id,
-      source_id: source.id,
+      partner_id: partner && partner.id,
+      department_id: department && department.id,
+      employee_id: employee && employee.id,
+      project_id: project && project.id,
+      currency_id: currency && currency.id,
+      settlement_id: settlement && settlement.id,
+      payment_id: payment && payment.id,
+      sales_order_id: sales_order && sales_order.id,
+      source_id: source && source.id,
       details
     });
     return order;
@@ -117,7 +119,7 @@ export default class extends saasplat.aggregate {
     if (mdate.invalid()) {
       throw Error(this.t('订单日期无效'));
     }
-    if (!partner && !this.partner_id) {
+    if (!partner) {
       throw Error(this.t('供应商不能为空'));
     }
     if ((!details || !details.length) && (!this.details || !this.details.length)) {
@@ -130,33 +132,72 @@ export default class extends saasplat.aggregate {
       code,
       datetime: mdate.format('YYYY-MM-DD'),
       ...other,
-      partner_id: partner.id || this.partner_id,
-      department_id: department.id || this.department_id,
-      employee_id: employee.id || this.employee_id,
-      project_id: project.id || this.project_id,
-      currency_id: currency.id || this.currency_id,
-      settlement_id: settlement.id || this.settlement_id,
-      payment_id: payment.id || this.payment_id,
-      sales_order_id: sales_order.id || this.sales_order_id,
-      source_id: source.id || this.source_id,
-      details: details || this.details
+      partner_id: partner && partner.id,
+      department_id: department && department.id,
+      employee_id: employee && employee.id,
+      project_id: project && project.id,
+      currency_id: currency && currency.id,
+      settlement_id: settlement && settlement.id,
+      payment_id: payment && payment.id,
+      sales_order_id: sales_order && sales_order.id,
+      source_id: source && source.id,
+      details: details,
+    });
+  }
+
+  // 折扣到指定金额
+  discount(amount, calField = 'amount') {
+    // 分摊规则：
+    //   - 分摊到最后一笔用减法，将（整单折扣金额-已分摊金额合计）分摊到最后一条明细上。
+    //   - 分摊后的原币折扣金额=原币折扣金额+分摊的折扣金额。
+
+    this.raiseEvent('updated', {
+      id: this.id,
+
+    });
+  }
+
+  // 配比拆单
+  matchBOM() {
+    // 数量计算：在配比采购页面通过输入需要分解的产品及产品数量，系统自动按“产品数量*[需用数量/生产数量*（1+损耗率）]”
+    // (说明：库存选项“领料数量的计算方式”为“ 需用数量”时，计算公式中不考虑损耗率；为“需用数量+损耗数量”时，材料计算公式中考虑损耗率。)
+    // 计算该产品各零部件的数量，该数量是对应主计量单位的数量。
+
+    this.raiseEvent('updated', {
+      id: this.id,
+
     });
   }
 
   // 提交
   submit() {
+    if (this.state !== 1) {
+      throw Error(this.t('单据未保存无法提交'));
+    }
     this.raiseEvent('submited', {
-      ...this
+      id: this.id
     });
   }
 
   // 取消提交
   cancel() {
-    this.raiseEvent('submited', { id: this.id });
+    if (this.state !== 2) {
+      throw Error(this.t('单据提交无法取消'));
+    }
+
+    // 已结转不能取消
+
+    this.raiseEvent('canceled', { id: this.id });
   }
 
   // 变更
-  change() {}
+  change({
+
+  }) {
+    // - ‘备注’可变更。
+    // - 明细：对已后续执行的行只可修改数量，修改后的量应大于后续执行量中的最小值；对由来源单生成但未后续执行的行，除来源带入的字段不可改，其它不控制。
+    this.raiseEvent('changed', { id: this.id });
+  }
 
   // ************* events *************
 
@@ -170,6 +211,10 @@ export default class extends saasplat.aggregate {
     this.state = 0;
   }
 
+  updated(){
+
+  }
+
   saved({
     state,
     ...other
@@ -180,7 +225,15 @@ export default class extends saasplat.aggregate {
     this.state = 1;
   }
 
+  changed(){
+    
+  }
+
   submited() {
     this.state = 2;
+  }
+
+  canceled() {
+    this.state = 1;
   }
 }

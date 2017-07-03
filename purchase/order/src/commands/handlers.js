@@ -27,6 +27,7 @@ const genCode = (datetime, partner, department, employee, project) => {
 }
 
 export default class extends saasplat.commandhandler {
+  // 新建订单，所有值都可以为空
   async create({
     id,
     datetime,
@@ -206,7 +207,7 @@ export default class extends saasplat.commandhandler {
         sales_order,
         source,
         details: order_details
-      });
+      });        
       await this.repository.save(order);
       await this.repository.commit();
     });
@@ -281,6 +282,29 @@ export default class extends saasplat.commandhandler {
           });
         }
       });
+      await this.repository.commit();
+    });
+  }
+
+  async discount({ id, price }) {
+    await this.repository.use(async() => {
+      const order = this.getAggregate('order').get(id);
+      const partner = order.partner_id && await this.getRepository(
+        'saas-plat-erp-base-partner/partner').get(order.partner_id)
+      //   - 若供应商非空：往来单位档案中“采购报价含税”=‘是’，则按明细原币含税金额比例分摊；否则按原币金额比例分摊；
+      //   - 若供应商为空，按原币金额比例分摊。
+      order.discount(amount, (partner && partner.price_with_tax) ?
+        'tax_amount' : 'amount');
+      await this.repository.save(order);
+      await this.repository.commit();
+    });
+  }
+
+  async matchBOM({ id }) {
+    await this.repository.use(async() => {
+      const order = this.getAggregate('order').get(id);
+      order.matchBOM();
+      await this.repository.save(order);
       await this.repository.commit();
     });
   }
