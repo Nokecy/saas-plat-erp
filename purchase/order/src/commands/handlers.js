@@ -97,18 +97,19 @@ export default class extends saasplat.commandhandler {
   async createByRequistion({
     datetime,
     // 选中的来源单据对象
-    requisition,
+    requisition_id,
     // 选中的请购单明细列表
     selecteds
   }) {
-    if (!requisition) {
-      throw Error(this.t('选中的请购单不存在'));
-    }
-    if (!Array.isArray(selecteds) || selecteds.length <= 0) {
-      throw Error(this.t('没有选中任何存货无法创建采购订单'));
-    }
-
     await this.repository.use(async() => {
+      const requisition = requisition_id && await this.getRepository(
+        'saas-plat-erp-purchase-requisition/requisition').get(
+        requisition_id);
+
+      if (!requisition) {
+        throw Error(this.t('选中的请购单不存在'));
+      }
+
       // 参照请购单字段
       const partner = requisition.partner_id && await this.getRepository(
           'saas-plat-erp-base-partner/partner').get(requisition.partner_id),
@@ -120,6 +121,10 @@ export default class extends saasplat.commandhandler {
           'saas-plat-erp-base-project/project').get(requisition.project_id),
         sales_order = requisition.sales_order_id && await this.getRepository(
           'saas-plat-erp-sales-order/order').get(requisition.sales_order_id);
+
+      if (!Array.isArray(selecteds) || selecteds.length <= 0) {
+        throw Error(this.t('没有选中任何存货无法创建采购订单'));
+      }
 
       // 请购单存货
       const details = requisition.details.filter(it =>
@@ -194,8 +199,8 @@ export default class extends saasplat.commandhandler {
       const order = await this.getRepository('order').get(id);
       order.save({
         ...other,
-        code: genCode(datetime, partner,
-          department, employee, project),
+        code: genCode(datetime, partner, department, employee,
+          project),
         datetime,
         partner,
         department,
@@ -207,7 +212,7 @@ export default class extends saasplat.commandhandler {
         sales_order,
         source,
         details: order_details
-      });        
+      });
       await this.repository.save(order);
       await this.repository.commit();
     });
@@ -285,27 +290,33 @@ export default class extends saasplat.commandhandler {
       await this.repository.commit();
     });
   }
+ 
 
-  async discount({ id, price }) {
+  async change({ id, ...other }) {
     await this.repository.use(async() => {
-      const order = this.getAggregate('order').get(id);
-      const partner = order.partner_id && await this.getRepository(
-        'saas-plat-erp-base-partner/partner').get(order.partner_id)
-      //   - 若供应商非空：往来单位档案中“采购报价含税”=‘是’，则按明细原币含税金额比例分摊；否则按原币金额比例分摊；
-      //   - 若供应商为空，按原币金额比例分摊。
-      order.discount(amount, (partner && partner.price_with_tax) ?
-        'tax_amount' : 'amount');
+      const order = this.getRepository('order').get(id);
+      order.change(other);
       await this.repository.save(order);
       await this.repository.commit();
     });
   }
 
-  async matchBOM({ id }) {
+  async submit({ id }) {
     await this.repository.use(async() => {
-      const order = this.getAggregate('order').get(id);
-      order.matchBOM();
+      const order = this.getRepository('order').get(id);
+      order.submit();
       await this.repository.save(order);
       await this.repository.commit();
     });
   }
+
+  async cancel({ id }) {
+    await this.repository.use(async() => {
+      const order = this.getRepository('order').get(id);
+      order.cancel();
+      await this.repository.save(order);
+      await this.repository.commit();
+    });
+  }
+
 }
