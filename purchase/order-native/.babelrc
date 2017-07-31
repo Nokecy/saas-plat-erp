@@ -12,8 +12,6 @@
     }, {
       "libraryName": "antd",
       "style": true
-    }, {
-      "libraryName": "saas-plat-native-core"
     }]],
     "transform-package"
   ]

@@ -4,7 +4,10 @@
   "description": "erp purchase order app",
   "main": "index.js",
   "scripts": {
-    "storybook": "node node_modules/saas-plat-native/cli/index.js storybook",
+    "configureJPush": "node node_modules/jpush-react-native/JPushConfiguration.js",
+    "configKeystore": "node node_modules/saas-plat-native/cli/index.js configKeyStore --config keystore.json",
+    "build": "node node_modules/saas-plat-native/cli/index.js build --entry index.js --output outputs --web --android --ios --windows --macos",
+    "storybook": "start-storybook -p 9900 -c .storybook",
     "pub": "npm publish --registry http://registry.npmjs.org"
   },
   "repository": {
@@ -22,9 +25,7 @@
   },
   "homepage": "https://github.com/saas-plat/saas-plat-erp/tree/master/purchase/order#readme",
   "dependencies": {
-    "react": "^15.6.1",
-    "react-dom": "^15.6.1",
-    "react-native": "^0.45.1",
+    "saas-plat-native": "^1.1.8",
     "saas-plat-native-core": "^1.0.85",
     "saas-plat-ui": "^1.0.0"
   },
