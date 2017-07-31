@@ -26,10 +26,7 @@ function loadStories() {
   flex();
   theme();
 
-  require('../stories/EditXs.js');
-  require('../stories/ListXs.js');
-
-  require('../stories/Edit.js');
+  require('../stories/App.js');
 
   // You can require as many stories as you need.
 }
