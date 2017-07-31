@@ -4,7 +4,7 @@
   "description": "erp purchase order app",
   "main": "index.js",
   "scripts": {
-    "storybook": "start-storybook -p 9001 -c .storybook",
+    "storybook": "node node_modules/saas-plat-native/cli/index.js storybook",
     "pub": "npm publish --registry http://registry.npmjs.org"
   },
   "repository": {
