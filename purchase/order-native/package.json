@@ -2,7 +2,7 @@
   "name": "saas-plat-erp-purchase-order-native",
   "version": "1.0.0",
   "description": "erp purchase order app",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
     "configureJPush": "node node_modules/jpush-react-native/JPushConfiguration.js",
     "configKeystore": "node node_modules/saas-plat-native/cli/index.js configKeyStore --config keystore.json",
