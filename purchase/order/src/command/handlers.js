@@ -156,6 +156,11 @@ export default class extends saasplat.commandhandler {
     });
   }
 
+ // 删除数据
+  async remove({id}){
+
+  }
+
   async save({
     id,
     datetime,
@@ -290,7 +295,7 @@ export default class extends saasplat.commandhandler {
       await this.repository.commit();
     });
   }
- 
+
 
   async change({ id, ...other }) {
     await this.repository.use(async() => {
