@@ -1,7 +1,7 @@
 {
-  "name": "area",
+  "name": "saas-plat-erp-base-partner",
   "version": "1.0.0",
-  "description": "erp base dic",
+  "description": "供应商档案管理",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

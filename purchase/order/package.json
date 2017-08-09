@@ -4,7 +4,11 @@
   "description": "erp purchase order service",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "compile": "babel src/ --out-dir lib/ --source-maps",
+    "watch": "babel --watch src/ --out-dir lib/ --source-maps",
+    "test": "node node_modules/mocha/bin/mocha --timeout 300000 --compilers js:babel-core/register ",
+    "pub": "npm publish --registry http://registry.npmjs.org",
+    "prepublish": "npm run compile"
   },
   "repository": {
     "type": "git",
@@ -19,6 +23,9 @@
   "author": "saas-plat.com",
   "license": "GPL-3.0",
   "dependencies": {
+    "saas-plat-erp-base-partner": "^1.0.0"
+  },
+  "optionalDependencies": {
     "saas-plat-erp-base-partner": "^1.0.0",
     "saas-plat-erp-base-department": "^1.0.0",
     "saas-plat-erp-base-employee": "^1.0.0",
@@ -49,6 +56,8 @@
     "eslint-plugin-promise": "^3.5.0",
     "eslint-plugin-standard": "^3.0.1",
     "saas-plat-server": "^1.0.11",
-    "moment": "^2.18.1"
+    "moment": "^2.18.1",
+    "chai": "^3.5.0",
+    "mocha": "^3.3.0"
   }
 }

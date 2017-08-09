@@ -139,8 +139,7 @@ export default class extends saasplat.commandhandler {
       datetime = getDatetime(datetime);
 
       const order = this.getAggregate('order').create({
-        code: genCode(datetime, partner,
-          department, employee, project),
+        code: genCode(datetime, partner, department, employee, project),
         datetime,
         details,
         partner,
@@ -290,7 +289,7 @@ export default class extends saasplat.commandhandler {
       await this.repository.commit();
     });
   }
- 
+
 
   async change({ id, ...other }) {
     await this.repository.use(async() => {

@@ -1,4 +1,4 @@
-export default class extends saasplat.aggregate {
+export default class Order extends saasplat.aggregate {
 
   // 订单编号
   code;
@@ -109,21 +109,11 @@ export default class extends saasplat.aggregate {
     if (this.state !== 0 && this.state !== 1) {
       throw Error(this.t('订单已审核无法修改'));
     }
-    if (!code) {
-      throw Error(this.t('订单编号不能为空'));
-    }
-    if (!datetime) {
-      throw Error(this.t('订单日期不能为空'));
-    }
-    const mdate = saasplat.moment(datetime || this.datetime);
-    if (mdate.invalid()) {
-      throw Error(this.t('订单日期无效'));
-    }
-    if (!partner) {
-      throw Error(this.t('供应商不能为空'));
-    }
-    if ((!details || !details.length) && (!this.details || !this.details.length)) {
-      throw Error(this.t('订单明细不能为空'));
+    if (datetime) {
+      const mdate = saasplat.moment(datetime);
+      if (mdate.invalid()) {
+        throw Error(this.t('订单日期无效'));
+      }
     }
     // todo 当采购订单日期小于启用日期或是已期末处理的会计期间日期时，不允许在采购订单上录入、修改订金。
 
@@ -147,8 +137,24 @@ export default class extends saasplat.aggregate {
 
   // 提交
   submit() {
-    if (this.state !== 1) {
-      throw Error(this.t('单据未保存无法提交'));
+    if (this.state !== 1 && this.state !== 0) {
+      throw Error(this.t('订单已审核无法修改'));
+    }
+    if (!this.code) {
+      throw Error(this.t('订单编号不能为空'));
+    }
+    if (!this.datetime) {
+      throw Error(this.t('订单日期不能为空'));
+    }
+    const mdate = saasplat.moment(this.datetime);
+    if (mdate.invalid()) {
+      throw Error(this.t('订单日期无效'));
+    }
+    if (!this.partner) {
+      throw Error(this.t('供应商不能为空'));
+    }
+    if (!this.details || !this.details.length) {
+      throw Error(this.t('订单明细不能为空'));
     }
     this.raiseEvent('submited', {
       id: this.id
