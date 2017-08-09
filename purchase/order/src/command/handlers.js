@@ -155,6 +155,11 @@ export default class extends saasplat.commandhandler {
     });
   }
 
+ // 删除数据
+  async remove({id}){
+
+  }
+
   async save({
     id,
     datetime,
