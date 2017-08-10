@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import 'saas-plat-server/lib/base';
+import './config';
 import Partner from '../src/domain/partner';
 
 describe('往来单位', function() {

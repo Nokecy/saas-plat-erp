@@ -1,4 +1,2 @@
-export default {
-  appPath : __dirname + '/../../../',
-  modules : '*/*'
-}
+
+import 'saas-plat-server/lib/base';

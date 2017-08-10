@@ -4,8 +4,8 @@
   "description": "erp purchase order service",
   "main": "index.js",
   "scripts": {
-    "compile": "babel src/ --out-dir lib/ --source-maps",
-    "watch": "babel --watch src/ --out-dir lib/ --source-maps",
+    "compile": "babel src/ --out-dir app/ --source-maps",
+    "watch": "babel --watch src/ --out-dir app/ --source-maps",
     "test": "node node_modules/mocha/bin/mocha --timeout 300000 --compilers js:babel-core/register ",
     "pub": "npm publish --registry http://registry.npmjs.org",
     "prepublish": "npm run compile"
