@@ -1,7 +1,7 @@
 {
-  "name": "saas-plat-erp-base-partner",
+  "name": "saas-plat-erp-partner",
   "version": "1.0.0",
-  "description": "往来单位管理",
+  "description": "往来单位档案",
   "main": "app",
   "scripts": {
     "compile": "babel src/ --out-dir app/ --source-maps",

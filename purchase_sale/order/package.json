@@ -1,7 +1,7 @@
 {
-  "name": "saas-plat-erp-purchase-order",
+  "name": "saas-plat-erp-order",
   "version": "1.0.0",
-  "description": "erp purchase order service",
+  "description": "erp order service",
   "main": "index.js",
   "scripts": {
     "compile": "babel src/ --out-dir app/ --source-maps",

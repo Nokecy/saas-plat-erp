@@ -1,5 +1,5 @@
 {
-  "name": "saas-plat-erp-base-inventory",
+  "name": "saas-plat-erp-inventory",
   "version": "1.0.0",
   "description": "erp base dic",
   "main": "index.js",

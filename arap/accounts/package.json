@@ -1,7 +1,7 @@
 {
-  "name": "area",
+  "name": "saas-plat-erp-accounts",
   "version": "1.0.0",
-  "description": "erp base dic",
+  "description": "账户档案",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

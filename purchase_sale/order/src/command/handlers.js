@@ -46,14 +46,14 @@ export default class extends saasplat.commandhandler {
   }) {
     await this.repository.use(async() => {
       const partner = partner_id && await this.getRepository(
-          'saas-plat-erp-base-partner/partner').get(partner_id),
+          'saas-plat-erp-partner/partner').get(partner_id),
         department = department_id && await this.getRepository(
-          'saas-plat-erp-base-department/department').get(
+          'saas-plat-erp-department/department').get(
           department_id),
         employee = employee_id && await this.getRepository(
-          'saas-plat-erp-base-employee/employee').get(employee_id),
+          'saas-plat-erp-employee/employee').get(employee_id),
         project = project_id && await this.getRepository(
-          'saas-plat-erp-base-project/project').get(project_id),
+          'saas-plat-erp-project/project').get(project_id),
         sales_order = sales_order_id && await this.getRepository(
           'saas-plat-erp-sales-order/order').get(sales_order_id),
         currency = currency_id && await this.getRepository(
@@ -112,13 +112,13 @@ export default class extends saasplat.commandhandler {
 
       // 参照请购单字段
       const partner = requisition.partner_id && await this.getRepository(
-          'saas-plat-erp-base-partner/partner').get(requisition.partner_id),
+          'saas-plat-erp-partner/partner').get(requisition.partner_id),
         department = requisition.department_id && await this.getRepository(
-          'saas-plat-erp-base-department/department').get(requisition.department_id),
+          'saas-plat-erp-department/department').get(requisition.department_id),
         employee = requisition.employee_id && await this.getRepository(
-          'saas-plat-erp-base-employee/employee').get(requisition.employee_id),
+          'saas-plat-erp-employee/employee').get(requisition.employee_id),
         project = requisition.project_id && await this.getRepository(
-          'saas-plat-erp-base-project/project').get(requisition.project_id),
+          'saas-plat-erp-project/project').get(requisition.project_id),
         sales_order = requisition.sales_order_id && await this.getRepository(
           'saas-plat-erp-sales-order/order').get(requisition.sales_order_id);
 
@@ -131,7 +131,7 @@ export default class extends saasplat.commandhandler {
         selecteds.indexOf(it.code) > -1).map(it => {
         return new this.getAggregate('order_detail')({
           inventory: await this.getRepository(
-            'saas-plat-erp-base-inventory/inventory').get(
+            'saas-plat-erp-inventory/inventory').get(
             it.inventory_id)
         });
       });
@@ -178,14 +178,14 @@ export default class extends saasplat.commandhandler {
   }) {
     await this.repository.use(async() => {
       const partner = partner_id && await this.getRepository(
-          'saas-plat-erp-base-partner/partner').get(partner_id),
+          'saas-plat-erp-partner/partner').get(partner_id),
         department = department_id && await this.getRepository(
-          'saas-plat-erp-base-department/department').get(
+          'saas-plat-erp-department/department').get(
           department_id),
         employee = employee_id && await this.getRepository(
-          'saas-plat-erp-base-employee/employee').get(employee_id),
+          'saas-plat-erp-employee/employee').get(employee_id),
         project = project_id && await this.getRepository(
-          'saas-plat-erp-base-project/project').get(project_id),
+          'saas-plat-erp-project/project').get(project_id),
         sales_order = sales_order_id && await this.getRepository(
           'saas-plat-erp-sales-order/order').get(sales_order_id),
         currency = currency_id && await this.getRepository(
@@ -225,14 +225,14 @@ export default class extends saasplat.commandhandler {
   async saveByPartner({ id, datetime }) {
     await this.repository.use(async() => {
       const partner = partner_id && await this.getRepository(
-          'saas-plat-erp-base-partner/partner').get(partner_id),
+          'saas-plat-erp-partner/partner').get(partner_id),
         department = department_id && await this.getRepository(
-          'saas-plat-erp-base-department/department').get(
+          'saas-plat-erp-department/department').get(
           department_id),
         employee = employee_id && await this.getRepository(
-          'saas-plat-erp-base-employee/employee').get(employee_id),
+          'saas-plat-erp-employee/employee').get(employee_id),
         project = project_id && await this.getRepository(
-          'saas-plat-erp-base-project/project').get(project_id),
+          'saas-plat-erp-project/project').get(project_id),
         sales_order = sales_order_id && await this.getRepository(
           'saas-plat-erp-sales-order/order').get(sales_order_id),
         currency = currency_id && await this.getRepository(
@@ -276,7 +276,7 @@ export default class extends saasplat.commandhandler {
             ...other,
             datetime,
             partner: (await this.getRepository(
-              'saas-plat-erp-base-partner/partner').get(
+              'saas-plat-erp-partner/partner').get(
               it)),
             department,
             employee,
