@@ -1,0 +1,61 @@
+{
+  "name": "saas-plat-erp-stock",
+  "version": "1.0.0",
+  "description": "库存管理",
+  "main": "index.js",
+  "scripts": {
+    "compile": "babel src/ --out-dir app/ --source-maps",
+    "watch": "babel --watch src/ --out-dir app/ --source-maps",
+    "test": "node node_modules/mocha/bin/mocha --timeout 300000 --compilers js:babel-core/register ",
+    "pub": "npm publish --registry http://registry.npmjs.org",
+    "prepublish": "npm run compile"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/saas-plat/saas-plat-erp/tree/master/purchase/order"
+  },
+  "keywords": [
+    "saas-plat",
+    "erp",
+    "purchase",
+    "order"
+  ],
+  "author": "saas-plat.com",
+  "license": "GPL-3.0",
+  "dependencies": {
+    "saas-plat-erp-inout_types": "^1.0.0",
+    "saas-plat-erp-partner": "^1.0.0"
+  },
+  "optionalDependencies": {
+    "saas-plat-erp-department": "^1.0.0",
+    "saas-plat-erp-employee": "^1.0.0",
+    "saas-plat-erp-project": "^1.0.0",
+    "saas-plat-erp-order": "^1.0.0",
+    "saas-plat-erp-currency": "^1.0.0"
+  },
+  "devDependencies": {
+    "babel-core": "^6.25.0",
+    "babel-eslint": "^7.2.3",
+    "babel-plugin-import": "^1.2.1",
+    "babel-plugin-root-import": "^5.1.0",
+    "babel-plugin-transform-decorators-legacy": "^1.3.4",
+    "babel-plugin-transform-package": "^1.0.0",
+    "babel-plugin-transform-runtime": "^6.15.0",
+    "babel-preset-es2015": "^6.22.0",
+    "babel-preset-es2017": "^6.24.1",
+    "babel-preset-stage-0": "^6.5.0",
+    "babel-preset-stage-1": "^6.5.0",
+    "babel-preset-stage-2": "^6.5.0",
+    "babel-preset-stage-3": "^6.5.0",
+    "eslint": "^3.19.0",
+    "eslint-config-standard": "^10.2.1",
+    "eslint-plugin-import": "^2.6.0",
+    "eslint-plugin-node": "^5.1.0",
+    "eslint-plugin-promise": "^3.5.0",
+    "eslint-plugin-standard": "^3.0.1",
+    "saas-plat-server": "^1.0.11",
+    "moment": "^2.18.1",
+    "chai": "^3.5.0",
+    "mocha": "^3.3.0"
+  }
+}

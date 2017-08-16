@@ -23,17 +23,16 @@
   "author": "saas-plat.com",
   "license": "GPL-3.0",
   "dependencies": {
-    "saas-plat-erp-base-partner": "^1.0.0"
+    "saas-plat-erp-partner": "^1.0.0"
   },
   "optionalDependencies": {
-    "saas-plat-erp-base-partner": "^1.0.0",
-    "saas-plat-erp-base-department": "^1.0.0",
-    "saas-plat-erp-base-employee": "^1.0.0",
-    "saas-plat-erp-base-project": "^1.0.0",
-    "saas-plat-erp-sales-order": "^1.0.0",
-    "saas-plat-erp-arap-currency": "^1.0.0",
-    "saas-plat-erp-arap-settlement": "^1.0.0",
-    "saas-plat-erp-arap-payment": "^1.0.0"
+    "saas-plat-erp-department": "^1.0.0",
+    "saas-plat-erp-employee": "^1.0.0",
+    "saas-plat-erp-project": "^1.0.0",
+    "saas-plat-erp-order": "^1.0.0",
+    "saas-plat-erp-currency": "^1.0.0",
+    "saas-plat-erp-settlement": "^1.0.0",
+    "saas-plat-erp-payment": "^1.0.0"
   },
   "devDependencies": {
     "babel-core": "^6.25.0",
