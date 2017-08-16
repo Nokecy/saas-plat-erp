@@ -1,0 +1,16 @@
+{
+    "extends": ["standard"],
+    "parserOptions": {
+      "ecmaVersion": 7
+    },
+    "rules":{
+      "semi": "off",
+      "space-before-function-paren": "off",
+      "padded-blocks": ["error", "never"]
+    },
+    "globals": {
+      "saasplat":{},
+      "describe":{},
+      "it":{}
+    }
+}
