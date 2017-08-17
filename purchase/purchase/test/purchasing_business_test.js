@@ -4,7 +4,7 @@ import './config';
 
 describe('进货业务', function() {
   it('普通进货', function() {
-
+    saasplat.publish('purchase');
   });
 
   it('普通退货', function() {
@@ -16,6 +16,6 @@ describe('进货业务', function() {
   });
 
   it('换货', function() {
-    
+
   });
 });
