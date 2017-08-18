@@ -11,6 +11,7 @@
     "globals": {
       "saasplat":{},
       "describe":{},
-      "it":{}
+      "it":{},
+      "before":{}
     }
 }
