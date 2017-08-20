@@ -41,39 +41,25 @@ export default class extends saasplat.commandhandler {
     sales_order_id,
     source_id,
     source_type,
-    details
-    ...other
+    details ...other
   }) {
     await this.repository.use(async() => {
-      const partner = partner_id && await this.getRepository(
-          'saas-plat-erp-partner/partner').get(partner_id),
-        department = department_id && await this.getRepository(
-          'saas-plat-erp-department/department').get(
-          department_id),
-        employee = employee_id && await this.getRepository(
-          'saas-plat-erp-employee/employee').get(employee_id),
-        project = project_id && await this.getRepository(
-          'saas-plat-erp-project/project').get(project_id),
-        sales_order = sales_order_id && await this.getRepository(
-          'saas-plat-erp-sales-order/order').get(sales_order_id),
-        currency = currency_id && await this.getRepository(
-          'saas-plat-erp-arap-currency/currency').get(currency_id),
-        settlement = settlement_id && await this.getRepository(
-          'saas-plat-erp-arap-settlement/settlement').get(
-          settlement_id),
-        payment = payment_id && await this.getRepository(
-          'saas-plat-erp-arap-payment/payment').get(payment_id),
-        source = source_id && source_type && await this.getRepository(
-          source_type).get(source_id);
+      const partner = partner_id && await this.getRepository('saas-plat-erp-partner/partner').get(partner_id),
+        department = department_id && await this.getRepository('saas-plat-erp-department/department').get(department_id),
+        employee = employee_id && await this.getRepository('saas-plat-erp-employee/employee').get(employee_id),
+        project = project_id && await this.getRepository('saas-plat-erp-project/project').get(project_id),
+        sales_order = sales_order_id && await this.getRepository('saas-plat-erp-sales-order/order').get(sales_order_id),
+        currency = currency_id && await this.getRepository('saas-plat-erp-arap-currency/currency').get(currency_id),
+        settlement = settlement_id && await this.getRepository('saas-plat-erp-arap-settlement/settlement').get(settlement_id),
+        payment = payment_id && await this.getRepository('saas-plat-erp-arap-payment/payment').get(payment_id),
+        source = source_id && source_type && await this.getRepository(source_type).get(source_id);
       let order_details;
       if (Array.isArray(details)) {
-        order_details = details.map(it =>
-          new this.getAggregate('detail')(it));
+        order_details = details.map(it => new this.getAggregate('detail')(it));
       }
       datetime = getDatetime(datetime);
-      const order = this.getAggregate('voucher').create({
-        code: genCode(datetime, partner,
-          department, employee, project),
+      const order = this.getAggregate().create({
+        code: genCode(datetime, partner, department, employee, project),
         datetime,
         ...other,
         partner,
@@ -87,19 +73,17 @@ export default class extends saasplat.commandhandler {
         source,
         order_details
       });
-      await this.repository.save(order);
+      await this.saveAndCommit(order);
       await this.repository.commit();
       return order.id;
     });
   }
 
   // 删除数据
-  async remove({ id }) {
-
-  }
+  async remove({id}) {}
 
   // 修改单据，审批后变更有条件限制
-  async change({
+  async save({
     id,
     datetime,
     partner_id,
@@ -116,54 +100,47 @@ export default class extends saasplat.commandhandler {
     ...other
   }) {
     await this.repository.use(async() => {
-      const partner = partner_id && await this.getRepository(
-          'saas-plat-erp-partner/partner').get(partner_id),
-        department = department_id && await this.getRepository(
-          'saas-plat-erp-department/department').get(
-          department_id),
-        employee = employee_id && await this.getRepository(
-          'saas-plat-erp-employee/employee').get(employee_id),
-        project = project_id && await this.getRepository(
-          'saas-plat-erp-project/project').get(project_id),
-        sales_order = sales_order_id && await this.getRepository(
-          'saas-plat-erp-sales-order/order').get(sales_order_id),
-        currency = currency_id && await this.getRepository(
-          'saas-plat-erp-arap-currency/currency').get(currency_id),
-        settlement = settlement_id && await this.getRepository(
-          'saas-plat-erp-arap-settlement/settlement').get(
-          settlement_id),
-        payment = payment_id && await this.getRepository(
-          'saas-plat-erp-arap-payment/payment').get(payment_id),
-        source = source_id && source_type && await this.getRepository(
-          source_type).get(source_id),
-        order_details = Array.isArray(details) ? details.map(it =>
-          new this.model('order_detail')(it)) : [];
-      const datetime = getDatetime(datetime);
-      const order = await this.getRepository('order').get(id);
-      order.save({
-        ...other,
-        code: genCode(datetime, partner, department, employee,
-          project),
-        datetime,
-        partner,
-        department,
-        employee,
-        project,
-        currency,
-        settlement,
-        payment,
-        sales_order,
-        source,
-        details: order_details
-      });
-      await this.repository.save(order);
-      await this.repository.commit();
+      const order = await this.getRepository().get(id);
+      if (order.state === 'submitted') {
+        // 执行变更
+        order.change({note: other.note, details});
+      } else {
+        const partner = partner_id && await this.getRepository('saas-plat-erp-partner/partner').get(partner_id),
+          department = department_id && await this.getRepository('saas-plat-erp-department/department').get(department_id),
+          employee = employee_id && await this.getRepository('saas-plat-erp-employee/employee').get(employee_id),
+          project = project_id && await this.getRepository('saas-plat-erp-project/project').get(project_id),
+          sales_order = sales_order_id && await this.getRepository('saas-plat-erp-sales-order/order').get(sales_order_id),
+          currency = currency_id && await this.getRepository('saas-plat-erp-arap-currency/currency').get(currency_id),
+          settlement = settlement_id && await this.getRepository('saas-plat-erp-arap-settlement/settlement').get(settlement_id),
+          payment = payment_id && await this.getRepository('saas-plat-erp-arap-payment/payment').get(payment_id),
+          source = source_id && source_type && await this.getRepository(source_type).get(source_id),
+          order_details = Array.isArray(details)
+            ? details.map(it => new this.getAggregate('detail')(it))
+            : [];
+        const datetime = getDatetime(datetime);
+        order.save({
+          ...other,
+          code: genCode(datetime, partner, department, employee, project),
+          datetime,
+          partner,
+          department,
+          employee,
+          project,
+          currency,
+          settlement,
+          payment,
+          sales_order,
+          source,
+          details: order_details
+        });
+      }
+      await this.saveAndCommit(order);
     });
   }
 
-  async submit({ id, wfName }) {
-    const order = await this.getRepository('order').get(id);
-    const wfs = await this.getWorkflows('order');
+  async submit({id, wfName}) {
+    const order = await this.getRepository().get(id);
+    const wfs = await this.getWorkflowDefines();
     const wf = await this.getWorkflow(order.id);
     if (wf.isPassed || wfs.length === 0) {
       // 审批通过，或没有流程直接审批通过
@@ -175,8 +152,8 @@ export default class extends saasplat.commandhandler {
     }
   }
 
-  async cancel({ id }) {
-    const order = await this.getRepository('order').get(id);
+  async cancel({id}) {
+    const order = await this.getRepository().get(id);
     const wf = await this.getWorkflow(order.id);
     if (wf) {
       // 如果有审批流取消

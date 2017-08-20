@@ -1,5 +1,4 @@
-export default class Order extends saasplat.aggregate {
-
+export default class extends saasplat.aggregate {
   // 订单编号
   code;
 
@@ -27,12 +26,12 @@ export default class Order extends saasplat.aggregate {
   // 到货地址
   shipping_address;
   // 联系人
-  contacts;
+  constacts;
   // 联系电话
   telephone_number;
 
   // 合同号
-  contract_no;
+  constract_no;
 
   // 结算方式
   settlement_id;
@@ -71,7 +70,7 @@ export default class Order extends saasplat.aggregate {
     details = [],
     ...other
   }) {
-    const order = new Order(id);
+    const order = new this(id);
     order.raiseEvent('created', {
       id,
       code,
@@ -120,7 +119,7 @@ export default class Order extends saasplat.aggregate {
     this.raiseEvent('saved', {
       id: this.id,
       code,
-      datetime: mdate.format('YYYY-MM-DD'),
+      datetime,
       ...other,
       partner_id: partner && partner.id,
       department_id: department && department.id,
@@ -131,7 +130,7 @@ export default class Order extends saasplat.aggregate {
       payment_id: payment && payment.id,
       sales_order_id: sales_order && sales_order.id,
       source_id: source && source.id,
-      details: details,
+      details: details
     });
   }
 
@@ -156,9 +155,7 @@ export default class Order extends saasplat.aggregate {
     if (!this.details || !this.details.length) {
       throw Error(this.t('订单明细不能为空'));
     }
-    this.raiseEvent('submited', {
-      id: this.id
-    });
+    this.raiseEvent('submited', {id: this.id});
   }
 
   // 取消提交
@@ -169,7 +166,7 @@ export default class Order extends saasplat.aggregate {
 
     // 已结转不能取消
 
-    this.raiseEvent('canceled', { id: this.id });
+    this.raiseEvent('canceled', {id: this.id});
   }
 
   // 变更
@@ -180,7 +177,7 @@ export default class Order extends saasplat.aggregate {
   }) {
     // - ‘备注’可变更。
     // - 明细：对已后续执行的行只可修改数量，修改后的量应大于后续执行量中的最小值；
-    //         对由来源单生成但未后续执行的行，除来源带入的字段不可改，其它不控制。
+    // 对由来源单生成但未后续执行的行，除来源带入的字段不可改，其它不控制。
     if (Object.keys(other).length > 0) {
       throw Error(this.t('对已后续执行的行只可修改数量和备注字段'));
     }
@@ -193,10 +190,10 @@ export default class Order extends saasplat.aggregate {
   // ************* events *************
 
   created({
-    state,
+    state, // 排除state
     ...other
   }) {
-    for (cont key in other) {
+    for (const key in other) {
       this[key] = other[key];
     }
     this.state = 0;
@@ -206,13 +203,13 @@ export default class Order extends saasplat.aggregate {
     state,
     ...other
   }) {
-    for (cont key in other) {
+    for (const key in other) {
       this[key] = other[key];
     }
     this.state = 1;
   }
 
-  changed({ note }) {
+  changed({note}) {
     if (note !== undefined) {
       this.note = note;
     }
