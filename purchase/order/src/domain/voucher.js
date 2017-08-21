@@ -1,12 +1,12 @@
 class Settlement {
   // 结算方式id
-  id,
+  id;
   // 账户
-  account,
+  account;
   // 金额
-  money,
+  money;
   // 票据号
-  bill_number
+  bill_number;
 }
 
 class Attachment {
@@ -270,7 +270,7 @@ export default class Voucher extends saasplat.aggregate {
     if (!this.details || !this.details.length) {
       throw Error(this.t('订单明细不能为空'));
     }
-    this.raiseEvent('submited', { id: this.id });
+    this.raiseEvent('submited', {id: this.id});
   }
 
   // 取消提交
@@ -281,7 +281,7 @@ export default class Voucher extends saasplat.aggregate {
 
     // 已结转不能取消
 
-    this.raiseEvent('canceled', { id: this.id });
+    this.raiseEvent('canceled', {id: this.id});
   }
 
   // 变更
@@ -291,8 +291,7 @@ export default class Voucher extends saasplat.aggregate {
     ...other
   }) {
     // - ‘备注’可变更。
-    // - 明细：对已后续执行的行只可修改数量，修改后的量应大于后续执行量中的最小值；
-    // 对由来源单生成但未后续执行的行，除来源带入的字段不可改，其它不控制。
+    // - 明细：对已后续执行的行只可修改数量，修改后的量应大于后续执行量中的最小值； 对由来源单生成但未后续执行的行，除来源带入的字段不可改，其它不控制。
     if (Object.keys(other).length > 0) {
       throw Error(this.t('对已后续执行的行只可修改数量和备注字段'));
     }
@@ -324,19 +323,19 @@ export default class Voucher extends saasplat.aggregate {
     this.state = 1;
   }
 
-  changed({ note, changer_id }) {
+  changed({note, changer_id}) {
     if (note !== undefined) {
       this.note = note;
     }
     this.changer_id = changer_id;
   }
 
-  submited({ auditor_id }) {
+  submited({auditor_id}) {
     this.auditor_id = auditor_id;
     this.state = 2;
   }
 
-  canceled({ canceler_id }) {
+  canceled({canceler_id}) {
     this.canceler_id = canceler_id;
     this.state = 1;
   }

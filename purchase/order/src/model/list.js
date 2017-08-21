@@ -46,8 +46,7 @@ export default class extends saasplat.model.base {
     // 来源单号
     source_id: saasplat.model.type.STRING,
 
-    // 明细汇总
-    // 总金额
+    // 明细汇总 总金额
     orig_total_amount: saasplat.model.type.DECIMAL(10, 8),
     // 含税总金额
     orig_total_tax_amount: saasplat.model.type.DECIMAL(10, 8),
@@ -65,12 +64,22 @@ export default class extends saasplat.model.base {
     // 备注
     note: saasplat.model.type.STRING(2048),
 
+    // 制单人
+    maker_id: saasplat.model.type.INTEGER,
+    maker_name: saasplat.model.type.STRING,
+    // 审核人
+    auditor_id: saasplat.model.type.INTEGER,
+    auditor_name: saasplat.model.type.STRING,
+    // 变更人
+    changer_id: saasplat.model.type.INTEGER,
+    changer_name: saasplat.model.type.STRING,
+    // 取消人
+    canceler_id: saasplat.model.type.INTEGER,
+    canceler_name: saasplat.model.type.STRING,
+
     // 附件数
     attachment_count: saasplat.model.type.INTEGER,
 
-    state: {
-      type: saasplat.model.type.ENUM('created', 'submitted'),
-      allowNull: false
-    }
+    state: saasplat.model.type.ENUM('created', 'submitted')
   }
 }

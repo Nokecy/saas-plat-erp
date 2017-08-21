@@ -1,4 +1,4 @@
-@saasplat.module('saas-plat-erp-purchase-order', 'order')
+@saasplat.module('saas-plat-erp-order', 'order')
 export default class OrderEvents extends saasplat.eventhandler {
   submited() {
     // 若订金金额不为空，则订单生效时，自动生成一张预付款单
