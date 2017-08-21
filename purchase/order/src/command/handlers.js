@@ -1,3 +1,5 @@
+import {name} from '../../package.json';
+
 const getDatetime = (datetime) => {
   // 默认业务日期
   if (!datetime || saasplat.moment(datetime).invalid()) {
@@ -12,9 +14,9 @@ const getDatetime = (datetime) => {
 
 const genCode = (datetime, partner, department, employee, project) => {
   // 自动编号
-  const coder = saasplat.service('coder');
-  if (coder && coder.canCode(this.__module)) {
-    return coder.create(tihs.__module, {
+  const coder = saasplat.service('saas-plat-erp-coder');
+  if (coder && coder.canCode(name)) {
+    return coder.create(name, {
       type_code: 'PO',
       datetime,
       partner_id: partner.id,
@@ -29,7 +31,7 @@ const genCode = (datetime, partner, department, employee, project) => {
 export default class extends saasplat.commandhandler {
   // 新建订单，所有值都可以为空
   async create({
-    id,
+    code,
     datetime,
     partner_id,
     department_id,
@@ -41,7 +43,8 @@ export default class extends saasplat.commandhandler {
     sales_order_id,
     source_id,
     source_type,
-    details ...other
+    details,
+    ...other
   }) {
     await this.repository.use(async() => {
       const partner = partner_id && await this.getRepository('saas-plat-erp-partner/partner').get(partner_id),
@@ -53,13 +56,9 @@ export default class extends saasplat.commandhandler {
         settlement = settlement_id && await this.getRepository('saas-plat-erp-arap-settlement/settlement').get(settlement_id),
         payment = payment_id && await this.getRepository('saas-plat-erp-arap-payment/payment').get(payment_id),
         source = source_id && source_type && await this.getRepository(source_type).get(source_id);
-      let order_details;
-      if (Array.isArray(details)) {
-        order_details = details.map(it => new this.getAggregate('detail')(it));
-      }
       datetime = getDatetime(datetime);
       const order = this.getAggregate().create({
-        code: genCode(datetime, partner, department, employee, project),
+        code: code || genCode(datetime, partner, department, employee, project),
         datetime,
         ...other,
         partner,
@@ -71,7 +70,7 @@ export default class extends saasplat.commandhandler {
         payment,
         sales_order,
         source,
-        order_details
+        details
       });
       await this.saveAndCommit(order);
       await this.repository.commit();
@@ -84,7 +83,7 @@ export default class extends saasplat.commandhandler {
 
   // 修改单据，审批后变更有条件限制
   async save({
-    id,
+    code,
     datetime,
     partner_id,
     department_id,
@@ -113,14 +112,11 @@ export default class extends saasplat.commandhandler {
           currency = currency_id && await this.getRepository('saas-plat-erp-arap-currency/currency').get(currency_id),
           settlement = settlement_id && await this.getRepository('saas-plat-erp-arap-settlement/settlement').get(settlement_id),
           payment = payment_id && await this.getRepository('saas-plat-erp-arap-payment/payment').get(payment_id),
-          source = source_id && source_type && await this.getRepository(source_type).get(source_id),
-          order_details = Array.isArray(details)
-            ? details.map(it => new this.getAggregate('detail')(it))
-            : [];
-        const datetime = getDatetime(datetime);
+          source = source_id && source_type && await this.getRepository(source_type).get(source_id);
+        datetime = getDatetime(datetime);
         order.save({
           ...other,
-          code: genCode(datetime, partner, department, employee, project),
+          code: code || genCode(datetime, partner, department, employee, project),
           datetime,
           partner,
           department,
@@ -131,7 +127,7 @@ export default class extends saasplat.commandhandler {
           payment,
           sales_order,
           source,
-          details: order_details
+          details
         });
       }
       await this.saveAndCommit(order);

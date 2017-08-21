@@ -1,12 +1,13 @@
-// 单据列表数据统计
+// 单据数据列表
 export default class extends saasplat.eventhandler {
   async createOrUpdate({
     id,
+    details,
     ...other
   }) {
     // 简单按照单据维度创建一个列表
     const Model = this.model('list');
-    const model = await Model.findById(id);
+    let model = await Model.findById(id);
     if (!model) {
       model = await Model.create({
         id,

@@ -1,5 +1,109 @@
-export default class extends saasplat.aggregate {
-  // 订单编号
+class Settlement {
+  // 结算方式id
+  id,
+  // 账户
+  account,
+  // 金额
+  money,
+  // 票据号
+  bill_number
+}
+
+class Attachment {
+  file_id;
+  // 显示文件名
+  name;
+  // 上传日期
+  datetime;
+  // 上传人
+  uploader_id;
+  // created deleted
+  status;
+}
+
+class UnitQuantity {
+  // 单位
+  unit_id;
+  // 数量
+  quantity;
+  // 换算率
+  exchange_rate;
+  // 是否是主计量单位
+  is_main;
+}
+
+class Detail {
+  // 存货条码
+  inventory_barcode_id;
+
+  // 项目
+  project_id;
+
+  // 存货
+  inventory_id;
+
+  // 采购单位与对应的数量，支持多计量
+  quantitys = [];
+
+  // 供应商编码
+  partner_id;
+
+  // 报价
+  quoted_price;
+
+  // 折扣%
+  discount_rate;
+
+  // 税率%
+  tax_rate;
+
+  // 单价
+  orig_price;
+  // 含税单价
+  orig_tax_price;
+  // 金额
+  orig_amount;
+  // 税额
+  orig_tax;
+  // 含税金额
+  orig_tax_amount;
+  // 折扣金额
+  orig_discount_amount;
+
+  // 本币单价
+  price;
+  // 本币含税单价
+  tax_price;
+  // 本币金额
+  amount;
+  // 本币税额
+  tax;
+  // 本币含税金额
+  tax_amount;
+  // 本币折扣金额
+  discount_amount;
+
+  //预计到货日期
+  arrival_datetime;
+  //赠品
+  is_present;
+
+  // 销售订单号
+  sales_order_id;
+  // 来源单据
+  source_type;
+  // 来源单号
+  source_id;
+
+  constructor(obj) {
+    for (cont key in obj) {
+      this[key] = obj[key];
+    }
+  }
+}
+
+export default class Voucher extends saasplat.aggregate {
+  // 单据编号，所有对象都有
   code;
 
   // 单据日期
@@ -33,9 +137,9 @@ export default class extends saasplat.aggregate {
   // 合同号
   constract_no;
 
-  // 结算方式
-  settlement_id;
-  // 订金金额 付款单号
+  // 结算方式 & 订金金额
+  settlements = [];
+  //  付款单号
   payment_id;
 
   // 销售订单号
@@ -50,6 +154,17 @@ export default class extends saasplat.aggregate {
 
   // 备注
   note;
+  // 制单人
+  maker_id;
+  // 审核人
+  auditor_id;
+  // 变更人
+  changer_id;
+  // 取消人
+  canceler_id;
+
+  // 单据附件
+  attachments = [];
 
   // 状态
   state;
@@ -155,7 +270,7 @@ export default class extends saasplat.aggregate {
     if (!this.details || !this.details.length) {
       throw Error(this.t('订单明细不能为空'));
     }
-    this.raiseEvent('submited', {id: this.id});
+    this.raiseEvent('submited', { id: this.id });
   }
 
   // 取消提交
@@ -166,7 +281,7 @@ export default class extends saasplat.aggregate {
 
     // 已结转不能取消
 
-    this.raiseEvent('canceled', {id: this.id});
+    this.raiseEvent('canceled', { id: this.id });
   }
 
   // 变更
@@ -209,17 +324,20 @@ export default class extends saasplat.aggregate {
     this.state = 1;
   }
 
-  changed({note}) {
+  changed({ note, changer_id }) {
     if (note !== undefined) {
       this.note = note;
     }
+    this.changer_id = changer_id;
   }
 
-  submited() {
+  submited({ auditor_id }) {
+    this.auditor_id = auditor_id;
     this.state = 2;
   }
 
-  canceled() {
+  canceled({ canceler_id }) {
+    this.canceler_id = canceler_id;
     this.state = 1;
   }
 }
