@@ -1,15 +1,17 @@
 class Settlement {
-  // 结算方式id
   id;
+  // 结算方式id
+  settlement_id;
   // 账户
   account;
   // 金额
-  money;
+  amount;
   // 票据号
   bill_number;
 }
 
 class Attachment {
+  id;
   file_id;
   // 显示文件名
   name;
@@ -22,6 +24,7 @@ class Attachment {
 }
 
 class UnitQuantity {
+  id;
   // 单位
   unit_id;
   // 数量

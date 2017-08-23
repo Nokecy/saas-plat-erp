@@ -1,9 +1,9 @@
 // 订单明细表
 export default class extends saasplat.model.base {
   schema = {
-    // 单据id
+    // **单据id
     voucher_id: saasplat.model.type.INTEGER,
-    // 单据编码
+    // **单据编码
     voucher_code: saasplat.model.type.STRING,
 
     // 存货条码

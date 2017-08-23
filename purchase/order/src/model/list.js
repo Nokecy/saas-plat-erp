@@ -1,6 +1,7 @@
 // 订单列表
 export default class extends saasplat.model.base {
   schema = {
+    // **
     code: saasplat.model.type.STRING,
     // 单据日期
     datetime: saasplat.model.type.DATE,
@@ -34,8 +35,8 @@ export default class extends saasplat.model.base {
     // 合同号
     constract_no: saasplat.model.type.STRING,
 
-    // 付款单id
-    payment_id: saasplat.model.type.STRING,
+    // **付款单id
+    // payment_id: saasplat.model.type.STRING,
     // 订金金额
     payment_amount: saasplat.model.type.DECIMAL(10, 8),
 
@@ -80,6 +81,7 @@ export default class extends saasplat.model.base {
     // 附件数
     attachment_count: saasplat.model.type.INTEGER,
 
+    // **
     state: saasplat.model.type.ENUM('created', 'submitted')
   }
 }

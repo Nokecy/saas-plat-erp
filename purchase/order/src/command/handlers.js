@@ -83,6 +83,7 @@ export default class extends saasplat.commandhandler {
 
   // 修改单据，审批后变更有条件限制
   async save({
+    id,
     code,
     datetime,
     partner_id,
@@ -95,7 +96,8 @@ export default class extends saasplat.commandhandler {
     sales_order_id,
     source_id,
     source_type,
-    details,
+    details,  // 新增无id， 修改有id
+    details_deleted, // 删除id列表
     ...other
   }) {
     await this.repository.use(async() => {
@@ -127,7 +129,8 @@ export default class extends saasplat.commandhandler {
           payment,
           sales_order,
           source,
-          details
+          details,
+          details_deleted
         });
       }
       await this.saveAndCommit(order);

@@ -5,10 +5,11 @@
       "ecmaVersion": 7
     },
     "rules":{
+      "one-var": "off",
       "semi": "off",
       "camelcase": ["off", {properties: "never"}],
       "space-before-function-paren": "off",
-      "padded-blocks": ["error", "never"]
+      "padded-blocks": "off"
     },
     "globals": {
       "saasplat":{},
